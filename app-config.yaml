@@ -1,5 +1,5 @@
 app:
-  title: Scaffolded Backstage App
+  title: Kubesmith
   baseUrl: http://localhost:3000
 
   # Enable all packages by default, this will discover packages from packages/app/package.json
@@ -12,7 +12,12 @@ app:
           path: /
 
 organization:
-  name: My Company
+  name: Kubesmith
+
+kubesmith:
+  baseUrl: http://localhost:8000
+  username: admin
+  password: ${KUBESMITH_PASSWORD}
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -85,33 +90,26 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Template]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
 
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
-
-    # Local example organizational data
     - type: file
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
 
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+    # Kubesmith templates
+    - type: file
+      target: ../../templates/deploy-app/template.yaml
+      rules:
+        - allow: [Template]
 
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+    - type: file
+      target: ../../templates/create-cluster/template.yaml
+      rules:
+        - allow: [Template]
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
