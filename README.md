@@ -6,5 +6,5 @@ To start the app, run:
 
 ```sh
 yarn install
-yarn start
+env $(cat .env | xargs) yarn start
 ```
